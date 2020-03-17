@@ -489,7 +489,7 @@ if (typeof jQuery === "undefined") {
 	 */
 	$.fn.mobileSelect.defaults = {
 		template:
-			'<div><input class="mobileSelect-search" type="search" placeholder="Search" aria-label="Search"><div class="list-container"></div><div class="mobileSelect-buttons"><a href="#" class="mobileSelect-savebtn"></a><a href="#" class="mobileSelect-clearbtn"></a><a href="#" class="mobileSelect-cancelbtn"></a></div></div>',
+			'<div><div class="mobileSelect-title"></div><form class="form-group"><input class="form-control mobileSelect-search" type="search" placeholder="Search" aria-label="Search"></form><div class="list-container"></div><div class="mobileSelect-buttons"><a href="#" class="mobileSelect-savebtn"></a><a href="#" class="mobileSelect-clearbtn"></a><a href="#" class="mobileSelect-cancelbtn"></a></div></div>',
 		//<div><div class="mobileSelect-title"></div><input class="mobileSelect-search" type="search" placeholder="Search" aria-label="Search"><div class="list-container"></div><div class="mobileSelect-buttons"><a href="#" class="mobileSelect-savebtn"></a><a href="#" class="mobileSelect-clearbtn"></a><a href="#" class="mobileSelect-cancelbtn"></a></div></div>
 		title: "Select an option",
 		buttonSave: "Save",
