@@ -138,7 +138,7 @@ if (typeof jQuery === 'undefined') {
 				.children('div')
 				.css({
 					'-webkit-transition' : 'all ' + this.animationSpeed / 1000 + 's',
-					transition         : 'all ' + this.animationSpeed / 1000 + 's'
+					transition           : 'all ' + this.animationSpeed / 1000 + 's'
 				})
 				.css(this.padding)
 				.addClass('anim-' + this.animation);
