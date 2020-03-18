@@ -69,7 +69,9 @@ if (typeof jQuery === 'undefined') {
 			var $elm = $(a);
 			//reject non SELECT elements
 			if ($elm[0].tagName !== 'SELECT') {
-				console.warn('Sorry, cannot initialized a ' + $elm[0].tagName + ' element');
+				console.warn(
+					'Sorry, cannot initialized a ' + $elm[0].tagName + ' element'
+				);
 				return true;
 				// continue;
 			}
@@ -91,7 +93,7 @@ if (typeof jQuery === 'undefined') {
 		this.init();
 	};
 	Mobileselect.prototype = {
-		init               : function() {
+		init: function() {
 			this._setUserOptions();
 			console.log('extraction started');
 			this._extractOptions();
@@ -100,7 +102,7 @@ if (typeof jQuery === 'undefined') {
 			this._buildHTML();
 			this._bindEvents();
 		},
-		_buildHTML         : function() {
+		_buildHTML: function() {
 			/*
 			 * build and insert the trigger element
 			 */
@@ -130,7 +132,9 @@ if (typeof jQuery === 'undefined') {
 			 */
 
 			//seting up the container.
-			this.$c = $('<div class="mobileSelect-container"></div>').addClass(this.theme).appendTo('body');
+			this.$c = $('<div class="mobileSelect-container"></div>')
+				.addClass(this.theme)
+				.appendTo('body');
 
 			//appending the container template
 			this.$c.html($.fn.mobileSelect.defaults.template);
@@ -139,8 +143,8 @@ if (typeof jQuery === 'undefined') {
 			this.$c
 				.children('div')
 				.css({
-					'-webkit-transition' : 'all ' + this.animationSpeed / 1000 + 's',
-					transition           : 'all ' + this.animationSpeed / 1000 + 's'
+					'-webkit-transition': 'all ' + this.animationSpeed / 1000 + 's',
+					transition: 'all ' + this.animationSpeed / 1000 + 's'
 				})
 				.css(this.padding)
 				.addClass('anim-' + this.animation);
@@ -169,7 +173,7 @@ if (typeof jQuery === 'undefined') {
 			}
 			this._appendOptionsList();
 		},
-		_appendOptionsList : function() {
+		_appendOptionsList: function() {
 			/*
 			 * append options list.
 			 */
@@ -182,26 +186,41 @@ if (typeof jQuery === 'undefined') {
 					if (a.groupDisabled) {
 						var b = 'disabled';
 					}
-					that.$listcontainer.append('<span class="mobileSelect-group" ' + b + '>' + a.group + '</span>');
+					that.$listcontainer.append(
+						'<span class="mobileSelect-group" ' + b + '>' + a.group + '</span>'
+					);
 					prevGroup = a.group;
 				}
 				if (a.groupDisabled || a.disabled) {
 					var b = 'disabled';
 				}
 				that.$listcontainer.append(
-					'<a href="#" class="mobileSelect-control" ' + b + ' data-value="' + a.value + '">' + a.text + '</a>'
+					'<a href="#" class="mobileSelect-control" ' +
+						b +
+						' data-value="' +
+						a.value +
+						'">' +
+						a.text +
+						'</a>'
 				);
 			});
 			this.sync();
 			this._updateBtnCount();
 		},
-		_updateBtnCount    : function() {
+		_updateBtnCount: function() {
 			/*
 			 * Update generated button count.
 			 */
-			if (this.$triggerElement.is('button') && this.$triggerElement.hasClass('btn-mobileSelect-gen')) {
+			if (
+				this.$triggerElement.is('button') &&
+				this.$triggerElement.hasClass('btn-mobileSelect-gen')
+			) {
 				var a = this.$triggerElement.find('.text'),
-					b = this.$triggerElement.next().find('option:selected').text() || this.$e.val(),
+					b =
+						this.$triggerElement
+							.next()
+							.find('option:selected')
+							.text() || this.$e.val(),
 					c = this.$e.attr('data-btntitle'),
 					d = this.$e.attr('data-selected');
 
@@ -233,7 +252,7 @@ if (typeof jQuery === 'undefined') {
 				}
 			}
 		},
-		_bindEvents        : function() {
+		_bindEvents: function() {
 			/*
 			 * binding events on trigger element & buttons.
 			 */
@@ -266,7 +285,11 @@ if (typeof jQuery === 'undefined') {
 				if (that.isMultiple) {
 					$this.toggleClass('selected');
 				} else {
-					$this.siblings().removeClass('selected').end().addClass('selected');
+					$this
+						.siblings()
+						.removeClass('selected')
+						.end()
+						.addClass('selected');
 					that.syncR();
 					that.hide();
 				}
@@ -274,7 +297,11 @@ if (typeof jQuery === 'undefined') {
 			this.$c.find('.mobileSelect-search').on('keyup', function(e) {
 				//.mobileSelect-control
 				var s = that.optionsRef.filter((doc) =>
-					doc.text.toLowerCase().includes($(e.currentTarget).val().toLowerCase())
+					doc.text.toLowerCase().includes(
+						$(e.currentTarget)
+							.val()
+							.toLowerCase()
+					)
 				);
 				console.log(s);
 				//var output = "Hello world!".split('');
@@ -282,7 +309,7 @@ if (typeof jQuery === 'undefined') {
 				that.refreshSearch();
 			});
 		},
-		_unbindEvents      : function() {
+		_unbindEvents: function() {
 			console.log;
 			/*
 			 * to unbind events while destroy.
@@ -293,18 +320,20 @@ if (typeof jQuery === 'undefined') {
 			this.$c.find('.mobileSelect-search').unbind('keyup');
 			this.$c.find('.mobileSelect-control').unbind('click');
 		},
-		sync               : function() {
+		sync: function() {
 			/*
 			 * sync from select element to mobile select container
 			 */
 			var selectedOptions = this.$e.val();
-			if (!this.isMultiple) selectedOptions = [ selectedOptions ];
+			if (!this.isMultiple) selectedOptions = [selectedOptions];
 			this.$c.find('a').removeClass('selected');
 			for (var i in selectedOptions) {
-				this.$c.find('a[data-value="' + selectedOptions[i] + '"]').addClass('selected');
+				this.$c
+					.find('a[data-value="' + selectedOptions[i] + '"]')
+					.addClass('selected');
 			}
 		},
-		syncR              : function() {
+		syncR: function() {
 			/*
 			 * sync from mobile select container to select element
 			 */
@@ -314,7 +343,7 @@ if (typeof jQuery === 'undefined') {
 			});
 			this.$e.val(selectedOptions);
 		},
-		hide               : function() {
+		hide: function() {
 			/*
 			 * hide animation with onClose callback
 			 */
@@ -327,7 +356,7 @@ if (typeof jQuery === 'undefined') {
 				that.onClose.apply(that.$e);
 			}, this.animationSpeed);
 		},
-		show               : function() {
+		show: function() {
 			/*
 			 * show animation with onOpen callback
 			 */
@@ -336,11 +365,13 @@ if (typeof jQuery === 'undefined') {
 			$('body').addClass('mobileSelect-noscroll');
 			var that = this;
 			setTimeout(function() {
-				that.$c.children('div').removeClass($.mobileSelect.animations.join(' '));
+				that.$c
+					.children('div')
+					.removeClass($.mobileSelect.animations.join(' '));
 			}, 10);
 			this.onOpen.apply(this.$e);
 		},
-		_setUserOptions    : function() {
+		_setUserOptions: function() {
 			/*
 			 * overwrite options with data-attributes if provided.
 			 */
@@ -375,7 +406,7 @@ if (typeof jQuery === 'undefined') {
 			if (this.search === 'true') {
 			}
 		},
-		_extractOptions    : function() {
+		_extractOptions: function() {
 			/*
 			 * Get options from the select element and store them in an array.
 			 */
@@ -394,11 +425,11 @@ if (typeof jQuery === 'undefined') {
 					}
 					console.log($t.val());
 					options.push({
-						value         : $t.val(),
-						text          : $.trim($t.text()),
-						disabled      : $t.prop('disabled'),
-						group         : label,
-						groupDisabled : labelDisabled
+						value: $t.val(),
+						text: $.trim($t.text()),
+						disabled: $t.prop('disabled'),
+						group: label,
+						groupDisabled: labelDisabled
 					});
 					console.log(options);
 				}
@@ -406,7 +437,7 @@ if (typeof jQuery === 'undefined') {
 			this.options = options;
 			this.optionsRef = options;
 		},
-		destroy            : function() {
+		destroy: function() {
 			/*
 			 * destroy the select
 			 * unbind events
@@ -420,7 +451,7 @@ if (typeof jQuery === 'undefined') {
 			this.$e.show();
 			console.log('done ');
 		},
-		refresh            : function() {
+		refresh: function() {
 			/*
 			 * refresh/sync the native select with the mobileSelect.
 			 */
@@ -429,7 +460,7 @@ if (typeof jQuery === 'undefined') {
 			this._unbindEvents();
 			this._bindEvents();
 		},
-		refreshSearch      : function() {
+		refreshSearch: function() {
 			this._appendOptionsList();
 			this._unbindEvents();
 			this._bindEvents();
@@ -440,8 +471,8 @@ if (typeof jQuery === 'undefined') {
 	 * for user defaults.
 	 */
 	$.mobileSelect = {
-		elements   : {}, //to store records
-		animations : [
+		elements: {}, //to store records
+		animations: [
 			'anim-top',
 			'anim-bottom',
 			'anim-left',
@@ -457,26 +488,26 @@ if (typeof jQuery === 'undefined') {
 	 * plugin defaults
 	 */
 	$.fn.mobileSelect.defaults = {
-		template       :
+		template:
 			'<div><div class="mobileSelect-title"></div><form class="form-group"><input class="form-control mobileSelect-search" type="search" placeholder="Search" aria-label="Search"></form><div class="list-container"></div><div class="mobileSelect-buttons"><a href="#" class="mobileSelect-savebtn"></a><a href="#" class="mobileSelect-clearbtn"></a><a href="#" class="mobileSelect-cancelbtn"></a></div></div>',
 		//<div><div class="mobileSelect-title"></div><input class="mobileSelect-search" type="search" placeholder="Search" aria-label="Search"><div class="list-container"></div><div class="mobileSelect-buttons"><a href="#" class="mobileSelect-savebtn"></a><a href="#" class="mobileSelect-clearbtn"></a><a href="#" class="mobileSelect-cancelbtn"></a></div></div>
-		title          : 'Select an option',
-		buttonSave     : 'Save',
-		search         : 'False',
-		buttonClear    : 'Clear',
-		buttonCancel   : 'Cancel',
-		padding        : {
-			top    : '20px',
-			left   : '20px',
-			right  : '20px',
-			bottom : '20px'
+		title: 'Select an option',
+		buttonSave: 'Save',
+		search: 'False',
+		buttonClear: 'Clear',
+		buttonCancel: 'Cancel',
+		padding: {
+			top: '20px',
+			left: '20px',
+			right: '20px',
+			bottom: '20px'
 		},
-		animation      : 'scale',
-		animationSpeed : 200,
-		theme          : 'white',
-		onOpen         : function() {},
-		onClose        : function() {},
-		style          : 'btn-default'
+		animation: 'scale',
+		animationSpeed: 200,
+		theme: 'white',
+		onOpen: function() {},
+		onClose: function() {},
+		style: 'btn-default'
 	};
 })(jQuery);
 //<form class="form-inline"><input class="form-control" type="search" placeholder="Search" aria-label="Search"></form>
