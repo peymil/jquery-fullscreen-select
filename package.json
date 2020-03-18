@@ -9,7 +9,9 @@
 		"fixcode": "yarn prettier --write ./*  !./*.min.js !./*/*.min.js"
 	},
 	"dependencies": {
-		"bootstrap": "^4.4.1",
+		"bootstrap": "^4.4.1"
+	},
+	"devDependencies": {
 		"eslint": "^6.8.0",
 		"prettier": "^1.19.1"
 	}

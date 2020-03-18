@@ -10,7 +10,7 @@
  */
 
 if (typeof jQuery === 'undefined') {
-	throw new Error("Mobileselect' requires jQuery");
+	throw new Error('Mobileselect requires jQuery');
 }
 
 (function($) {
@@ -70,7 +70,9 @@ if (typeof jQuery === 'undefined') {
 			//reject non SELECT elements
 			if ($elm[0].tagName !== 'SELECT') {
 				console.warn(
-					'Sorry, cannot initialized a ' + $elm[0].tagName + ' element'
+					'Sorry, cannot initialized a ' +
+						$elm[0].tagName +
+						' element'
 				);
 				return true;
 				// continue;
@@ -143,7 +145,8 @@ if (typeof jQuery === 'undefined') {
 			this.$c
 				.children('div')
 				.css({
-					'-webkit-transition': 'all ' + this.animationSpeed / 1000 + 's',
+					'-webkit-transition':
+						'all ' + this.animationSpeed / 1000 + 's',
 					transition: 'all ' + this.animationSpeed / 1000 + 's'
 				})
 				.css(this.padding)
@@ -180,19 +183,24 @@ if (typeof jQuery === 'undefined') {
 			this.$listcontainer.html('');
 			var that = this;
 			var prevGroup = '';
+			var b = '';
 			console.log(this.options);
 			$.each(this.options, function(i, a) {
 				if (a.group && a.group !== prevGroup) {
 					if (a.groupDisabled) {
-						var b = 'disabled';
+						b = 'disabled';
 					}
 					that.$listcontainer.append(
-						'<span class="mobileSelect-group" ' + b + '>' + a.group + '</span>'
+						'<span class="mobileSelect-group" ' +
+							b +
+							'>' +
+							a.group +
+							'</span>'
 					);
 					prevGroup = a.group;
 				}
 				if (a.groupDisabled || a.disabled) {
-					var b = 'disabled';
+					b = 'disabled';
 				}
 				that.$listcontainer.append(
 					'<a href="#" class="mobileSelect-control" ' +
@@ -416,12 +424,11 @@ if (typeof jQuery === 'undefined') {
 				if ($t.text()) {
 					//                    var label = $t.parent().is('optgroup') ? $t.parent().attr('label') : false;
 
+					var label = false;
+					var labelDisabled = false;
 					if ($t.parent().is('optgroup')) {
-						var label = $t.parent().attr('label');
-						var labelDisabled = $t.parent().prop('disabled');
-					} else {
-						var label = false;
-						var labelDisabled = false;
+						label = $t.parent().attr('label');
+						labelDisabled = $t.parent().prop('disabled');
 					}
 					console.log($t.val());
 					options.push({
@@ -509,5 +516,6 @@ if (typeof jQuery === 'undefined') {
 		onClose: function() {},
 		style: 'btn-default'
 	};
+	// eslint-disable-next-line no-undef
 })(jQuery);
 //<form class="form-inline"><input class="form-control" type="search" placeholder="Search" aria-label="Search"></form>
