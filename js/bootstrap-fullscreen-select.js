@@ -298,9 +298,10 @@ if (typeof jQuery === 'undefined') {
 						.removeClass('selected')
 						.end()
 						.addClass('selected');
-					that.syncR();
 					that.hide();
 				}
+				
+				that.syncR();
 			});
 			this.$c.find('.mobileSelect-search').on('keyup', function(e) {
 				//.mobileSelect-control
@@ -518,4 +519,3 @@ if (typeof jQuery === 'undefined') {
 	};
 	// eslint-disable-next-line no-undef
 })(jQuery);
-//<form class="form-inline"><input class="form-control" type="search" placeholder="Search" aria-label="Search"></form>
