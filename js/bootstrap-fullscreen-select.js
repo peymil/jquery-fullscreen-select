@@ -97,12 +97,24 @@ if (typeof jQuery === 'undefined') {
 	Mobileselect.prototype = {
 		init: function() {
 			this._setUserOptions();
-			console.log('extraction started');
 			this._extractOptions();
-			console.log('extracted');
-			console.log(this.options);
 			this._buildHTML();
 			this._bindEvents();
+		},
+		_mobilecheck: function() {
+			var check = false;
+			(function(a) {
+				if (
+					/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(
+						a
+					) ||
+					/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(
+						a.substr(0, 4)
+					)
+				)
+					check = true;
+			})(navigator.userAgent || navigator.vendor || window.opera);
+			return check;
 		},
 		_buildHTML: function() {
 			/*
@@ -159,6 +171,9 @@ if (typeof jQuery === 'undefined') {
 				.find('.mobileSelect-title')
 				.html(this.title)
 				.end()
+				.find('.mobileSelect-search-div')
+				.html(this.searchInput)
+				.end()
 				.find('.mobileSelect-savebtn')
 				.html(this.buttonSave)
 				.end()
@@ -169,6 +184,10 @@ if (typeof jQuery === 'undefined') {
 				.html(this.buttonCancel)
 				.end();
 			this.$listcontainer = this.$c.find('.list-container');
+
+			if (!this.useSaveButton && !this.isMultiple) {
+				this.$c.find('.mobileSelect-savebtn').remove();
+			}
 			if (!this.isMultiple) {
 				this.$c.find('.mobileSelect-clearbtn').remove();
 			} else {
@@ -184,7 +203,6 @@ if (typeof jQuery === 'undefined') {
 			var that = this;
 			var prevGroup = '';
 			var b = '';
-			console.log(this.options);
 			$.each(this.options, function(i, a) {
 				if (a.group && a.group !== prevGroup) {
 					if (a.groupDisabled) {
@@ -224,36 +242,35 @@ if (typeof jQuery === 'undefined') {
 				this.$triggerElement.hasClass('btn-mobileSelect-gen')
 			) {
 				var a = this.$triggerElement.find('.text'),
-					b =
-						this.$triggerElement
-							.next()
-							.find('option:selected')
-							.text() || this.$e.val(),
+					b = this.$triggerElement.next() || this.$e,
 					c = this.$e.attr('data-btntitle'),
 					d = this.$e.attr('data-selected');
 
-				if (b === null && c === undefined) {
-					a.html('Nothing selected');
+				a.width(this.$triggerElement.width() - 10);
+
+				if (b.val() == null && c == undefined) {
+					a.html(this.nothingSelectedText);
 					return false;
 				}
-				if (b === null) {
+				if (b.val() == null) {
 					a.html(c);
 					return false;
 				}
-
 				if (this.isMultiple) {
-					if (b.length === 1) {
-						a.html(b);
+					if (b.val().length <= this.maxMultiItemShow) {
+						a.html(b.val().join(', '));
 					} else {
-						if (d === undefined) {
-							a.html(b.length + ' items selected');
+						if (d == undefined) {
+							a.html(
+								b.val().length + ' ' + this.itemsSelectedText
+							);
 						} else {
-							a.html(b.length + ' ' + d);
+							a.html(b.val().length + ' ' + d);
 						}
 					}
 				} else {
-					if (c === undefined) {
-						a.html(b);
+					if (c == undefined) {
+						a.html(b.find(':selected').text());
 					} else {
 						a.html(c);
 					}
@@ -268,6 +285,20 @@ if (typeof jQuery === 'undefined') {
 			this.$triggerElement.on('click', function(e) {
 				e.preventDefault();
 				that.show();
+				//if user press esc, window closes
+				$(document).on('keyup', function(e) {
+					if (e.key === 'Escape') {
+						e.preventDefault();
+						that.hide();
+					}
+				});
+			});
+			//if user click outer div, window closes
+			this.$c.on('click', function(e) {
+				e.preventDefault();
+				if (this == e.target) {
+					that.hide();
+				}
 			});
 			this.$c.find('.mobileSelect-savebtn').on('click', function(e) {
 				e.preventDefault();
@@ -289,7 +320,6 @@ if (typeof jQuery === 'undefined') {
 				var $this = $(this);
 
 				if ($this.attr('disabled') == 'disabled') return false;
-
 				if (that.isMultiple) {
 					$this.toggleClass('selected');
 				} else {
@@ -298,11 +328,13 @@ if (typeof jQuery === 'undefined') {
 						.removeClass('selected')
 						.end()
 						.addClass('selected');
-					that.hide();
+					if (!that.useSaveButton) {
+						that.syncR();
+						that.hide();
+					}
 				}
-				
-				that.syncR();
 			});
+
 			this.$c.find('.mobileSelect-search').on('keyup', function(e) {
 				//.mobileSelect-control
 				var s = that.optionsRef.filter((doc) =>
@@ -312,18 +344,18 @@ if (typeof jQuery === 'undefined') {
 							.toLowerCase()
 					)
 				);
-				console.log(s);
 				//var output = "Hello world!".split('');
 				that.options = s;
 				that.refreshSearch();
 			});
 		},
 		_unbindEvents: function() {
-			console.log;
 			/*
 			 * to unbind events while destroy.
 			 */
 			this.$triggerElement.unbind('click');
+			//Outer div click event unbind
+			this.$c.unbind('click');
 			this.$c.find('.mobileSelect-clearbtn').unbind('click');
 			this.$c.find('.mobileSelect-cancelbtn').unbind('click');
 			this.$c.find('.mobileSelect-search').unbind('keyup');
@@ -364,6 +396,8 @@ if (typeof jQuery === 'undefined') {
 				$('body').removeClass('mobileSelect-noscroll');
 				that.onClose.apply(that.$e);
 			}, this.animationSpeed);
+			//Esc event unbind
+			$(document).unbind('keyup');
 		},
 		show: function() {
 			/*
@@ -394,8 +428,20 @@ if (typeof jQuery === 'undefined') {
 			if (this.$e.data('animation-speed') !== undefined) {
 				this.animationSpeed = this.$e.data('animation-speed');
 			}
+			if (this.$e.data('max-multi-item') !== undefined) {
+				this.maxMultiItemShow = this.$e.data('max-multi-item');
+			}
 			if (this.$e.data('padding') !== undefined) {
 				this.padding = this.$e.data('padding');
+			} else {
+				if (this._mobilecheck()) {
+					this.padding = {
+						top: '0px',
+						left: '0px',
+						right: '0px',
+						bottom: '0px'
+					};
+				}
 			}
 			if (this.$e.data('btntext-save') !== undefined) {
 				this.buttonSave = this.$e.data('btntext-save');
@@ -412,7 +458,15 @@ if (typeof jQuery === 'undefined') {
 			if (this.animation === 'none') {
 				this.animationSpeed = 0;
 			}
-			if (this.search === 'true') {
+			if (this.$e.data('search-text') !== undefined) {
+				this.searchText = this.$e.data('search-text');
+			}
+
+			if (this.search == true) {
+				this.searchInput =
+					'<input class="form-control mobileSelect-search" type="text" placeholder="' +
+					this.searchText +
+					'">';
 			}
 		},
 		_extractOptions: function() {
@@ -431,7 +485,6 @@ if (typeof jQuery === 'undefined') {
 						label = $t.parent().attr('label');
 						labelDisabled = $t.parent().prop('disabled');
 					}
-					console.log($t.val());
 					options.push({
 						value: $t.val(),
 						text: $.trim($t.text()),
@@ -439,7 +492,6 @@ if (typeof jQuery === 'undefined') {
 						group: label,
 						groupDisabled: labelDisabled
 					});
-					console.log(options);
 				}
 			});
 			this.options = options;
@@ -497,20 +549,24 @@ if (typeof jQuery === 'undefined') {
 	 */
 	$.fn.mobileSelect.defaults = {
 		template:
-			'<div><div class="mobileSelect-title"></div><form class="form-group"><input class="form-control mobileSelect-search" type="search" placeholder="Search" aria-label="Search"></form><div class="list-container"></div><div class="mobileSelect-buttons"><a href="#" class="mobileSelect-savebtn"></a><a href="#" class="mobileSelect-clearbtn"></a><a href="#" class="mobileSelect-cancelbtn"></a></div></div>',
-		//<div><div class="mobileSelect-title"></div><input class="mobileSelect-search" type="search" placeholder="Search" aria-label="Search"><div class="list-container"></div><div class="mobileSelect-buttons"><a href="#" class="mobileSelect-savebtn"></a><a href="#" class="mobileSelect-clearbtn"></a><a href="#" class="mobileSelect-cancelbtn"></a></div></div>
+			'<div><div class="mobileSelect-title"></div><div class="mobileSelect-search-div"></div><div class="list-container"></div><div class="mobileSelect-buttons"><a href="#" class="mobileSelect-savebtn"></a><a href="#" class="mobileSelect-clearbtn"></a><a href="#" class="mobileSelect-cancelbtn"></a></div></div>',
 		title: 'Select an option',
 		buttonSave: 'Save',
-		search: 'False',
+		useSaveButton: false,
+		search: true,
 		buttonClear: 'Clear',
 		buttonCancel: 'Cancel',
+		searchText: 'Search',
+		nothingSelectedText: 'Nothing Selected',
+		itemsSelectedText: 'items selected',
 		padding: {
-			top: '20px',
-			left: '20px',
-			right: '20px',
-			bottom: '20px'
+			top: '20%',
+			left: '25%',
+			right: '25%',
+			bottom: '20%'
 		},
-		animation: 'scale',
+		animation: 'bottom',
+		maxMultiItemShow: 3,
 		animationSpeed: 200,
 		theme: 'white',
 		onOpen: function() {},

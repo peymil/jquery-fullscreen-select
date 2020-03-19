@@ -18,6 +18,9 @@ button.btn-mobileSelect-gen {
 }
 button.btn-mobileSelect-gen span.text {
 	float: left;
+	white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
 }
 button.btn-mobileSelect-gen span.glyphicon.glyphicon-chevron-down {
 	float: right;
@@ -71,7 +74,7 @@ button.btn-mobileSelect-gen:not([class*="col-"]):not([class*="form-control"]):no
 }
 .mobileSelect-container .list-container .mobileSelect-control {
 	display: block;
-	padding: 17px 20px;
+	padding: 12px 20px;
 	padding-left: 40px;
 	background-position: 10px center;
 	background-repeat: no-repeat;
