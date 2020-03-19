@@ -257,8 +257,17 @@ if (typeof jQuery === 'undefined') {
 					return false;
 				}
 				if (this.isMultiple) {
+					console.log(b.find(':selected').text());
+
 					if (b.val().length <= this.maxMultiItemShow) {
-						a.html(b.val().join(', '));
+						var mText = b
+							.find(':selected')
+							.map(function() {
+								return $(this).text();
+							})
+							.get()
+							.join(', ');
+						a.html(mText);
 					} else {
 						if (d == undefined) {
 							a.html(
