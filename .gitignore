@@ -1,7 +1,9 @@
 /nbproject/private/
 node_modules
-<<<<<<< HEAD
 *.lock
+<<<<<<< HEAD
 =======
 package-lock
 >>>>>>> 04ad70d7f3bae16646ad8e50f4b6dcb959c8837a
+=======
+>>>>>>> 287349091ef0e2964a53d9e0fc99970c8937622c
