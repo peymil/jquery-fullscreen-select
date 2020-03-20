@@ -27,7 +27,7 @@ button.btn-mobileSelect-gen span.caret {
 	float: right;
 	margin-top: 8px;
 }
-button.btn-mobileSelect-gen:not([class*="col-"]):not([class*="form-control"]):not(.input-group-btn):not(.btn-block) {
+button.btn-mobileSelect-gen:not([class*='col-']):not([class*='form-control']):not(.input-group-btn):not(.btn-block) {
 	width: 220px;
 }
 .mobileSelect-container {
