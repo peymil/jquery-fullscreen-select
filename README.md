@@ -1,7 +1,7 @@
 # bootstrap-fullscreen-select
 
 Cloned from
-[craftpip]https://github.com/craftpip/bootstrap-fullscreen-select/commits?author=craftpip.
+[craftpip](https://github.com/craftpip/bootstrap-fullscreen-select/commits?author=craftpip).
 Just added searchbar function.
 
 A custom fullscreen select / multiselect for Bootstrap using BUTTONS or User
